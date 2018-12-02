@@ -20,10 +20,25 @@ import java.io.*;
  */
 
 public class Client extends Application{
-
+	private static String userName;
+	private static int socket;
+	/**
+	 * Implemented by Alex J. Monteiro De Pina
+	 * Constructor for the client, this is not final yet may need changes
+	 * @param s the user name of the client 
+	 * @param num the socket number of the Chat is going to join
+	 */
+	public Client(String s, int num) { 
+		userName = s;
+		socket = num;
+	}
+	/**
+	 * Implemented by Alex J. Monteiro De Pina
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		try {
-			Socket cs = new Socket("localhost", 8800); // server
+			Socket cs = new Socket("localhost", socket); // server
 			System.out.println("Client is Runnig");
 			DataInputStream dins = new DataInputStream(cs.getInputStream());
 			DataOutputStream douts = new DataOutputStream(cs.getOutputStream());
