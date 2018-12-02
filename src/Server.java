@@ -11,7 +11,7 @@ import java.util.Vector;
 
 public class Server {
 
-	private static LinkedList<chatRoom> chatRooms;
+	private static LinkedList<chatRoom> chatRooms = new LinkedList<>();
 	private static int numOfChats = 0;
 	static Vector<ClientHandler> users = new Vector<>();
 
@@ -28,16 +28,29 @@ public class Server {
 		Scanner in = new Scanner(System.in);
 		///------------------------------------------------------------------
 		int option = in.nextInt(); // Will be used to determine if user is creating a new chat or join and existing one 
-		switch(option) {
-		case 1:
-			break;
-		case 2:
-			break;
-		default:
-			System.out.println("Something went wrong. Either Join or Create a Chat.");
-			break;
-			}
+		int portNumber = 8800; // this number will be used to create a new chat room using the port
+		String displayMsg = "";
 		try {
+			switch(option) {
+			case 1:
+				if (numOfChats == 0)
+					displayMsg = "No available chat to join!";
+				
+				break;
+			case 2:
+				System.out.println("Enter Chat Name: ");
+				String chatName = in.next();
+				chatRooms.add(new chatRoom(portNumber, chatName));
+				numOfChats++;
+				portNumber = portNumber + 100;// increase the port number for the next chat
+				
+				break;
+			default:
+				displayMsg = "Something went wrong. Either Join or Create a Chat.";
+				System.out.println(displayMsg);
+				break;
+				}
+			
 			chatRoom test = new chatRoom(8800, "chatAlex");
 			ServerSocket ss = test.getServerSocket();
 			System.out.println("Server is Runnig");
