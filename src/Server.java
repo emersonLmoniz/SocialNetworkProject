@@ -3,6 +3,11 @@ import java.net.*;
 import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.Vector;
+/* 
+ * Server Class 
+ * Written by: Alex J. Monteiro De Pina 
+ * Date: 11/30/2018
+ */
 
 public class Server {
 
@@ -14,6 +19,24 @@ public class Server {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		/**
+		 * TEMPORARY use of command line all the input will be replaced with the GUI input
+		 */
+		System.out.println("Do you want to Join or Create a new Chat");
+		System.out.println("(1) Join\n(2)Create");
+		Scanner in = new Scanner(System.in);
+		///------------------------------------------------------------------
+		int option = in.nextInt(); // Will be used to determine if user is creating a new chat or join and existing one 
+		switch(option) {
+		case 1:
+			break;
+		case 2:
+			break;
+		default:
+			System.out.println("Something went wrong. Either Join or Create a Chat.");
+			break;
+			}
 		try {
 			chatRoom test = new chatRoom(8800, "chatAlex");
 			ServerSocket ss = test.getServerSocket();
@@ -45,11 +68,13 @@ public class Server {
 
 	}
 
-	/**
-	 * 
-	 * @author depinaa5
-	 *
+	/* 
+	 * chatRoom Class
+	 * Will Create a new chatRoom and hold all the info for the chat 
+	 * Written by: Alex J. Monteiro De Pina 
+	 * Date: 11/29/2018
 	 */
+
 	private static class chatRoom {
 		private int socket; // will be used to create a new server socket
 		private String chatName; // chat name.
@@ -91,7 +116,13 @@ public class Server {
 	}
 }
 
-//ClientHandler class 
+/* 
+ * Client Handler 
+ * A helper class that will will handle multiple clients in the same chatroom 
+ * manage the send and receive of the message
+ * Written by: Alex J. Monteiro De Pina 
+ * Date: 11/29/2018
+ */
 class ClientHandler implements Runnable {
 	
 	private String name;
@@ -126,7 +157,7 @@ class ClientHandler implements Runnable {
 				msgout = msgin;
 				for (ClientHandler ch : Server.users) { // send the message to all the users
 					if ((!(ch.name).equals(this.name)) && (ch.isloggedin==true)) {
-					ch.douts.writeUTF(ch.name+": "+msgout);
+					ch.douts.writeUTF(this.name+": "+msgout);
 					ch.douts.flush();
 					}
 				}

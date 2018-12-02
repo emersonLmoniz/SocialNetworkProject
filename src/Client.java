@@ -12,6 +12,12 @@ import java.io.*;
  * Written by: Emerson Moniz
  * Date: 11/30/2018
  */
+ 
+ /*
+ * Client Main Function Send and receive message from multiple clients 
+ * Written by: Alex J. Monteiro De Pina
+ * Date: 11/29/2018
+ */
 
 public class Client extends Application{
 
