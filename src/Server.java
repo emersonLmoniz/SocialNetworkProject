@@ -22,6 +22,7 @@ public class Server {
 		
 		/**
 		 * TEMPORARY use of command line all the input will be replaced with the GUI input
+		 * Server must always be running so no need to critically update server 
 		 */
 		System.out.println("Do you want to Join or Create a new Chat");
 		System.out.println("(1) Join\n(2)Create");
@@ -34,13 +35,16 @@ public class Server {
 			switch(option) {
 			case 1:
 				if (numOfChats == 0)
+//					Suggestion might want to look at the client class and see if this is what you are looking 
+//					Display Message will not display 
 					displayMsg = "No available chat to join!";
-				
+//				After this is done it will open the server port
 				break;
 			case 2:
 				System.out.println("Enter Chat Name: ");
 				String chatName = in.next();
 				chatRooms.add(new chatRoom(portNumber, chatName));
+//				No need to increment the numOfChats the numOf Chats has been incremented for a new chat room
 				numOfChats++;
 				portNumber = portNumber + 100;// increase the port number for the next chat
 				
@@ -50,7 +54,8 @@ public class Server {
 				System.out.println(displayMsg);
 				break;
 				}
-			
+//			Issue for server when created. You create a chatroom with the default chatroom value but try to run the next chatroom 
+//			in the same port it throws an error after you reach here
 			chatRoom test = new chatRoom(8800, "chatAlex");
 			ServerSocket ss = test.getServerSocket();
 			System.out.println("Server is Runnig");

@@ -20,7 +20,7 @@ import java.io.*;
  */
 
 public class Client extends Application{
-
+// Your focus should be around here 
 	public static void main(String[] args) {
 		try {
 			Socket cs = new Socket("localhost", 8800); // server
