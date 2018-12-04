@@ -9,7 +9,7 @@
    <center>
       <HBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
-            <TextField alignment="CENTER" />
+            <TextField fxid="CENTER" />
          </children>
       </HBox>
    </center>

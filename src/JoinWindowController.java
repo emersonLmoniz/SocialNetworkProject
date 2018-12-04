@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 /* 
  * Controller of the Join Chatroom 
@@ -15,8 +16,9 @@ import javafx.stage.Stage;
  * Date:11/30/2018
  */
 public class JoinWindowController {
-	
-	
+
+	private ComboBox comboBoxChatRoom;
+
 	public void clickPrevious(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
 		System.out.println("User clicked previous");
@@ -26,13 +28,12 @@ public class JoinWindowController {
 		Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
 		window.setScene(mainWindowScene);
 		window.show();
-		/*ArrayList <chatRoom> chats = new ArrayList <chatRoom>();
-		chats = Server.chatRooms;
-		chats.get(0).getChatName();
-		*/
+		
 	}
 	public void clickNext(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
+		//sending data to server
+		String chosenChatroom = (String) comboBoxChatRoom.getValue();
 		System.out.println("User clicked next");
 		Parent joinWindowParent = FXMLLoader.load(getClass().getResource("EnterUserNameView.fxml"));
 		Scene joinWindowScene = new Scene(joinWindowParent);
@@ -41,6 +42,10 @@ public class JoinWindowController {
 		window.setScene(joinWindowScene);
 		window.show();
 	}
-	
-	
+
+	public void importchatrooms(ActionEvent event){
+		//import data
+		comboBoxChatRoom.getItems().addAll();
+	}
+
 }

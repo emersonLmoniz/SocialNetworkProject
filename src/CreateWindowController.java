@@ -1,3 +1,4 @@
+import java.awt.TextArea;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -5,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 /* 
  * Controller of the Creating a Chatroom 
@@ -14,12 +16,21 @@ import javafx.stage.Stage;
  */
 public class CreateWindowController {
 // Implement methods in controller class
+	private TextField tfUsername;
+	private TextField tfChatName;
+	private TextArea taAllowedUserName;
+	private TextField tfChatKey;
 	public void clickStartChatroom(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
 		System.out.println("User has entered all necessary information, for chatroom");
+		//get data
+		String username = tfUsername.getText();
+		String chatname = tfChatName.getText();
+		String chatkey = tfChatKey.getText();
+		String [] userscanjoin = taAllowedUserName.getText().split("\n");
+		//sending data to server
 		Parent chatRoomParent = FXMLLoader.load(getClass().getResource("ChatRoomView.fxml"));
 		Scene chatRoomScene = new Scene(chatRoomParent);
-		
 		Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
 		window.setScene(chatRoomScene);
 		window.show();
