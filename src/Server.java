@@ -20,11 +20,11 @@ public class Server {
 	public static int getNumUser() {
 		return users.size();
 	}
-	public static void arrayToList() {
+	/*public static void arrayToList() {
 		for(int i = 0; i <  allowedUsers.length; i++) { // convert String Array to Arraylist
 			allowedUList.add(allowedUsers[i]); 
 		}
-	}
+	}*/
 	/**
 	 * @param args
 	 */
@@ -86,7 +86,7 @@ class ClientHandler implements Runnable {
 	final DataOutputStream douts;
 	boolean isloggedin;
 	Socket s;
-	private static String key;
+	private String key;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	// constructor
@@ -97,16 +97,15 @@ class ClientHandler implements Runnable {
 		this.s = s;
 		this.isloggedin = true;
 	}
-	private static void destributeKey() {
-		for (ClientHandler ch : Server.users) {
-			if (Server.allowedUList.contains(ch.name)) {
-				key = Server.chat.getKey();
+	private void destributeKey() {
+		for (int i = 1; i < Server.users.size() ; i++) { // starts from the second user
+			if (Server.allowedUList.contains(Server.users.get(i).name)) {
+				Server.users.get(i).key = Server.chat.getKey();// get the key from the first user AKA the creator
 			}
 			else
-				key = " ";
+				this.key ="X";
 		}
 	}
-
 	@Override
 	public void run() {
 		String msgin = "", msgout = "";
@@ -121,7 +120,8 @@ class ClientHandler implements Runnable {
 				}
 				msgout = msgin;
 				destributeKey();
-				for (ClientHandler ch : Server.users) { // send the message to all the users
+				for (int i = 1; i < Server.users.size() ; i++) { // send the message to all the users
+					ClientHandler ch = Server.users.get(i);
 					if ((!(ch.name).equals(this.name)) && (ch.isloggedin == true)) {
 						msgout = Algorithm.decrypt(msgout,ch.key);
 						ch.douts.writeUTF(this.name + ": " + msgout);
