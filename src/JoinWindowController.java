@@ -1,4 +1,6 @@
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,8 @@ import javafx.stage.Stage;
  * Date:11/30/2018
  */
 public class JoinWindowController {
+	
+	
 	public void clickPrevious(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
 		System.out.println("User clicked previous");
@@ -22,6 +26,10 @@ public class JoinWindowController {
 		Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
 		window.setScene(mainWindowScene);
 		window.show();
+		/*ArrayList <chatRoom> chats = new ArrayList <chatRoom>();
+		chats = Server.chatRooms;
+		chats.get(0).getChatName();
+		*/
 	}
 	public void clickNext(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
@@ -33,4 +41,6 @@ public class JoinWindowController {
 		window.setScene(joinWindowScene);
 		window.show();
 	}
+	
+	
 }
