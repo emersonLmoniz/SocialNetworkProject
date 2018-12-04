@@ -14,17 +14,17 @@ public class Server {
 	private static String userName, key, allowedU;
 	static String[] allowedUsers;
 	static ArrayList<String> allowedUList = new ArrayList<>();
-	static Vector<ClientHandler> users = new Vector<>();
+	static ArrayList<ClientHandler> users = new ArrayList <>();
 	static chatRoom chat;
 	
 	public static int getNumUser() {
 		return users.size();
 	}
-	/*public static void arrayToList() {
+	public static void arrayToList() {
 		for(int i = 0; i <  allowedUsers.length; i++) { // convert String Array to Arraylist
 			allowedUList.add(allowedUsers[i]); 
 		}
-	}*/
+	}
 	/**
 	 * @param args
 	 */
@@ -49,14 +49,21 @@ public class Server {
 						key = dins.readUTF();
 						allowedU = dins.readUTF();
 						allowedUsers = allowedU.split(" ");
+						arrayToList();
 						chat = new chatRoom(8800, key, allowedUsers);
 					}
 					else {
 						userName = dins.readUTF();
 					}
+					if (users.size() > 0 && allowedUList.contains(userName)) {
+						System.out.println(chat.getKey());
+						key = chat.getKey();
+					}
+					else {
+						key = "X";
+					}
 					// Create a new handler for this client
-
-					ClientHandler user = new ClientHandler(s,userName, dins, douts);
+					ClientHandler user = new ClientHandler(s,userName, key, dins, douts);
 					Thread t = new Thread(user);// creates a new thread for this user
 					users.add(user);
 					t.start();	
@@ -90,21 +97,13 @@ class ClientHandler implements Runnable {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	// constructor
-	public ClientHandler(Socket s,String name, DataInputStream dins, DataOutputStream douts) {
+	public ClientHandler(Socket s,String name,String k, DataInputStream dins, DataOutputStream douts) {
 		this.dins = dins;
 		this.douts = douts;
 		this.name = name;
 		this.s = s;
 		this.isloggedin = true;
-	}
-	private void destributeKey() {
-		for (int i = 1; i < Server.users.size() ; i++) { // starts from the second user
-			if (Server.allowedUList.contains(Server.users.get(i).name)) {
-				Server.users.get(i).key = Server.chat.getKey();// get the key from the first user AKA the creator
-			}
-			else
-				this.key ="X";
-		}
+		this.key = k;
 	}
 	@Override
 	public void run() {
@@ -113,17 +112,17 @@ class ClientHandler implements Runnable {
 			try {
 				// receive the string
 				msgin = dins.readUTF();
+				System.out.println("print msg before encryprion: " + msgin);
+				msgin = Algorithm.encrypt(msgin, Server.chat.getKey()); // encrypt the message before sending it to the server
 				if (msgin.equals("exit")) { // user wants to leave chat
 					isloggedin = false;
 					this.s.close();
 					break;
 				}
 				msgout = msgin;
-				destributeKey();
-				for (int i = 1; i < Server.users.size() ; i++) { // send the message to all the users
-					ClientHandler ch = Server.users.get(i);
+				for (ClientHandler ch : Server.users) { // send the message to all the users
 					if ((!(ch.name).equals(this.name)) && (ch.isloggedin == true)) {
-						msgout = Algorithm.decrypt(msgout,ch.key);
+						msgout = Algorithm.decrypt(msgout, ch.key);
 						ch.douts.writeUTF(this.name + ": " + msgout);
 						ch.douts.flush();
 					}

@@ -81,7 +81,7 @@ public class Client extends Application {
 				userName = br.readLine();	
 				douts.writeUTF(userName);
 				douts.flush();
-				key = " ";
+				key = "X";
 			}
 			
 			Thread sendMessage = new Thread(new Runnable() {
@@ -90,7 +90,6 @@ public class Client extends Application {
 						String msgout;
 						try {
 							msgout = br.readLine();
-							msgout=Algorithm.encrypt(msgout, key); // encrypt the message before sending it to the server
 							douts.writeUTF(msgout);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
