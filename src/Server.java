@@ -16,7 +16,7 @@ public class Server {
 	static ArrayList<String> allowedUList = new ArrayList<>();
 	static ArrayList<ClientHandler> users = new ArrayList <>();
 	static chatRoom chat;
-	
+
 	public static int getNumUser() {
 		return users.size();
 	}
@@ -55,11 +55,10 @@ public class Server {
 					else {
 						userName = dins.readUTF();
 					}
-					if (users.size() > 0 && allowedUList.contains(userName)) {
-						System.out.println(chat.getKey());
+					if ( users.size() > 0 && allowedUList.contains(userName)) { // give everyone in the list a key except for the person how created the chat
 						key = chat.getKey();
 					}
-					else {
+					else if (users.size() > 0) {
 						key = "X";
 					}
 					// Create a new handler for this client
@@ -112,13 +111,12 @@ class ClientHandler implements Runnable {
 			try {
 				// receive the string
 				msgin = dins.readUTF();
-				System.out.println("print msg before encryprion: " + msgin);
-				msgin = Algorithm.encrypt(msgin, Server.chat.getKey()); // encrypt the message before sending it to the server
 				if (msgin.equals("exit")) { // user wants to leave chat
 					isloggedin = false;
 					this.s.close();
 					break;
 				}
+				msgin = Algorithm.encrypt(msgin, Server.chat.getKey()); // encrypt the message before sending it to the server
 				msgout = msgin;
 				for (ClientHandler ch : Server.users) { // send the message to all the users
 					if ((!(ch.name).equals(this.name)) && (ch.isloggedin == true)) {
@@ -137,6 +135,7 @@ class ClientHandler implements Runnable {
 			// closing resources
 			this.dins.close();
 			this.douts.close();
+
 
 		} catch (IOException e) {
 			e.printStackTrace();
