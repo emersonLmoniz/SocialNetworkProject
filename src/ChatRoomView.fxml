@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="401.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ChatRoomController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.0" minWidth="10.0" prefWidth="302.0" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="332.0" minWidth="10.0" prefWidth="298.0" />
@@ -19,19 +19,19 @@
   </rowConstraints>
    <children>
       <TextArea prefHeight="59.0" prefWidth="300.0" GridPane.rowIndex="1" />
-      <Button mnemonicParsing="false" text="Decrypt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <TextArea prefHeight="200.0" prefWidth="200.0" promptText="Enter Text to Decrypt" wrapText="true" GridPane.rowIndex="2" />
-      <TextArea disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3" />
-      <TextArea id="taUserlist" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
+      <Button id="btnDecrypt" fx:id="btnDecrypt" mnemonicParsing="false" onAction="#DecryptMessage" text="Decrypt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextArea id="tfEncryptedMessage" fx:id="tfEncryptedMessage" prefHeight="200.0" prefWidth="200.0" promptText="Enter Text to Decrypt" wrapText="true" GridPane.rowIndex="2" />
+      <TextArea id="tfDecryptedMessage" fx:id="tfDecryptedMessage" disable="true" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="3" />
+      <TextArea id="taUserlist" fx:id="taUserlist" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
          <padding>
             <Insets left="30.0" right="30.0" />
          </padding></TextArea>
-      <TextArea id="taChatRoom" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
+      <TextArea id="taChatRoom" fx:id="taChatRoom" editable="false" prefHeight="200.0" prefWidth="200.0" wrapText="true">
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
       </TextArea>
-      <Button id="btnSend" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" text="Send" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextArea id="taMessege" prefHeight="200.0" prefWidth="200.0" promptText="Send message to chatroom" wrapText="true" GridPane.rowIndex="1" />
+      <Button id="btnSend" fx:id="btnSend" alignment="CENTER" contentDisplay="CENTER" defaultButton="true" mnemonicParsing="false" onAction="#EncryptMessage" text="Send" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextArea id="taMessage" fx:id="taMessage" prefHeight="200.0" prefWidth="200.0" promptText="Send message to chatroom" wrapText="true" GridPane.rowIndex="1" />
    </children>
 </GridPane>

@@ -22,11 +22,11 @@
       <Label id="lblUsername" text="Username" />
       <Label id="lblChatName" text="Chat Name" GridPane.rowIndex="1" />
       <Label id="lblChatKey" text="Chat Key" GridPane.rowIndex="2" />
-      <TextField id="tfUsername" GridPane.columnIndex="1" />
-      <TextField id="tfChatName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TextField id="tfChatKey" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <TextField fx:id="tfUsername" GridPane.columnIndex="1" />
+      <TextField fx:id="tfChatName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="tfChatKey" GridPane.columnIndex="1" GridPane.rowIndex="2" />
       <Label id="lblListOfUsername" text="Usernames allowed to join chat:" GridPane.rowIndex="3" />
-      <TextArea id="taAllowedUserName" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextArea  fx:id="taAllowedUserName" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
             <Button mnemonicParsing="false" onAction="#clickStartChatroom" text="Next" />

@@ -76,12 +76,17 @@ public class Server {
 class ClientHandler implements Runnable {
 
 	private String name;
-	final DataInputStream dins;
-	final DataOutputStream douts;
+	DataInputStream dins;
+	DataOutputStream douts;
 	boolean isloggedin;
+	private String message;
 	Socket s;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+	public ClientHandler(String UserName) {
+		this.name = UserName;
+	}
+	
 	// constructor
 	public ClientHandler(Socket s,String name, DataInputStream dins, DataOutputStream douts) {
 		this.dins = dins;
@@ -90,10 +95,21 @@ class ClientHandler implements Runnable {
 		this.s = s;
 		this.isloggedin = true;
 	}
+	
+	public String getMessage() {
+		return message;
+	}
+
+
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 
 	@Override
 	public void run() {
-		String msgin = "", msgout = "";
+		String msgin = message, msgout = "";
 		while (true) {
 			try {
 				// receive the string
