@@ -13,7 +13,14 @@ import javafx.stage.Stage;
  * Date:11/30/2018
  */
 public class MainWindowController {
+	EnterUserNameController enterUserNameController;
+	ChatRoomController chatRoomController;
 	
+	public void initialize() {
+		System.out.println("Chatroom has started");
+		enterUserNameController.init(this);
+		chatRoomController.init(this);
+	}
 	public void clickJoinChatroom(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
 		System.out.println("User clicked join");
@@ -34,5 +41,9 @@ public class MainWindowController {
 		Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
 		window.setScene(createWindowScene);
 		window.show();
+	}	
+	
+	public String getUserName() {
+		return enterUserNameController.tfUserName.getText();
 	}
 }

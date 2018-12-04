@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /* 
@@ -15,6 +16,8 @@ import javafx.stage.Stage;
  * Date:11/30/2018
  */
 public class EnterUserNameController {
+	private MainWindowController mainWindow;
+	public TextField tfUserName;
 	public void clickStartChatroom(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
 		System.out.println("User has joined the chatroom");
@@ -26,4 +29,9 @@ public class EnterUserNameController {
 		window.show();
 	}
 	
+	public void init(MainWindowController mainWindowController) {
+		// TODO Auto-generated method stub
+		mainWindow = mainWindowController;
+	}
+
 }
