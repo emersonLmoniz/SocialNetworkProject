@@ -43,7 +43,7 @@ public class Algorithm {
 	 * Second loop will be used to create the encrypted message
 	 * This method returns the encrypted message 
 	 */
-	protected static String decrypt(String encryptedMessage,String key) {
+	private static String decrypt(String encryptedMessage,String key) {
 		String decryptedMessage="";
 //		Used to store the random values for the decryption 
 		int keyValues[] = new int[key.length()];

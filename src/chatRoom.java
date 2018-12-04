@@ -15,7 +15,7 @@ public class chatRoom {
 		socket = s;
 		key = k;
 		for(int i = 0; i < au.length; i++) { // convert String Array to Arraylist
-			//allowedUsers.add(au[i]); 
+			allowedUsers.add(au[i]); 
 		}
 	}
 
@@ -36,10 +36,6 @@ public class chatRoom {
 	/**
 	 * @return The server socket that is being used for this chat
 	 */
-	
-	public void addGuest(String g) {
-		allowedUsers.add(g);
-	}
 	public String getKey() {
 		return key;
 	}

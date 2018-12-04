@@ -11,13 +11,19 @@ import java.util.Vector;
  */
 
 public class Server {
-	private static chatRoom chat;
 	private static String userName, key, allowedU;
 	static String[] allowedUsers;
+	static ArrayList<String> allowedUList = new ArrayList<>();
 	static Vector<ClientHandler> users = new Vector<>();
+	static chatRoom chat;
 	
 	public static int getNumUser() {
 		return users.size();
+	}
+	public static void arrayToList() {
+		for(int i = 0; i <  allowedUsers.length; i++) { // convert String Array to Arraylist
+			allowedUList.add(allowedUsers[i]); 
+		}
 	}
 	/**
 	 * @param args
@@ -80,6 +86,7 @@ class ClientHandler implements Runnable {
 	final DataOutputStream douts;
 	boolean isloggedin;
 	Socket s;
+	private static String key;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 	// constructor
@@ -89,6 +96,15 @@ class ClientHandler implements Runnable {
 		this.name = name;
 		this.s = s;
 		this.isloggedin = true;
+	}
+	private static void destributeKey() {
+		for (ClientHandler ch : Server.users) {
+			if (Server.allowedUList.contains(ch.name)) {
+				key = Server.chat.getKey();
+			}
+			else
+				key = " ";
+		}
 	}
 
 	@Override
@@ -104,8 +120,10 @@ class ClientHandler implements Runnable {
 					break;
 				}
 				msgout = msgin;
+				destributeKey();
 				for (ClientHandler ch : Server.users) { // send the message to all the users
 					if ((!(ch.name).equals(this.name)) && (ch.isloggedin == true)) {
+						msgout = Algorithm.decrypt(msgout,ch.key);
 						ch.douts.writeUTF(this.name + ": " + msgout);
 						ch.douts.flush();
 					}
