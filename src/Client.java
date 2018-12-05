@@ -48,8 +48,6 @@ public class Client extends Application {
 		System.out.println("Enter List of people");
 		listOfpeople = br.readLine();
 		System.out.println("Created");
-		
-
 	}
 
 	/**
@@ -121,7 +119,7 @@ public class Client extends Application {
 			System.out.println("\n" + e.getMessage());
 			System.exit(1);
 		}
-		// launch(args);
+		 launch(args);
 	}
 
 	public void start(Stage primaryStage) throws Exception {

@@ -70,11 +70,4 @@ public class Algorithm {
 		
 		return decryptedMessage;
 	}
-	
-	public static void main(String[] args) {
-		String passcode = Algorithm.encrypt("hi i am good ", "Andrew");
-		System.out.println("Encrypted: "+passcode);
-		System.out.println("Decrypted: "+Algorithm.decrypt(passcode, "Andrew"));
-	}
-
 }

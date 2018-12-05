@@ -8,12 +8,12 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="JoinWindowController">
    <children>
-      <ComboBox id="comboBoxChatRoom" layoutX="44.0" layoutY="35.0" prefHeight="31.0" prefWidth="200.0" />
+      <ComboBox id="comboBoxChatRoom" fx:id="comboBoxChatRoom" layoutX="44.0" layoutY="35.0" prefHeight="31.0" prefWidth="200.0" />
       <Label id="lblOptions" contentDisplay="CENTER" layoutX="23.0" layoutY="14.0" prefHeight="21.0" prefWidth="265.0" text="Choose the chatroom you want to join" AnchorPane.topAnchor="14.0" />
       <HBox id="hbChoice" alignment="CENTER" layoutX="44.0" layoutY="179.0" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
          <children>
-            <Button id="btnPrevious" alignment="CENTER" mnemonicParsing="false" onAction="#clickPrevious" text="Previous" />
-            <Button id="btnNext" mnemonicParsing="false" onAction="#clickNext" text="Next" />
+            <Button id="btnPrevious" fx:id="btnPrevious" alignment="CENTER" mnemonicParsing="false" onAction="#clickPrevious" text="Previous" />
+            <Button id="btnNext" fx:id="btnNext" mnemonicParsing="false" onAction="#clickNext" text="Next" />
          </children>
       </HBox>
    </children>
