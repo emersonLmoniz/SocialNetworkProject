@@ -4,8 +4,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+//import java.util.ArrayList;
+//import java.util.Scanner;
 import java.io.*;
 
 /* 
@@ -147,11 +147,11 @@ public class Client extends Application {
 		}
 		else
 		{
-			primaryStage = new Stage();
+			Stage SecondStage = new Stage();
 			Parent mainWindow = FXMLLoader.load(getClass().getResource("EnterUserNameView.fxml"));
-			primaryStage.setTitle("Join a Chat");
-			primaryStage.setScene(new Scene(mainWindow, 300, 120));
-			primaryStage.show();
+			SecondStage.setTitle("Join a Chat");
+			SecondStage.setScene(new Scene(mainWindow, 300, 120));
+			SecondStage.show();
 		}
 	}
 }

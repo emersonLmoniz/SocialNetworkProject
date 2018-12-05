@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -40,7 +42,8 @@ public class ChatRoomController {
 	    void EncryptMessage(ActionEvent event) {
 
 	    }
-	    
+	    public void clickStartChatroom(ActionEvent event) throws IOException {
+	    }
 	    @FXML // This method is called by the FXMLLoader when initialization is complete
 	    void initialize() {
 	        assert tfEncryptedMessage != null : "fx:id=\"tfEncryptedMessage\" was not injected: check your FXML file 'ChatRoomView.fxml'.";
