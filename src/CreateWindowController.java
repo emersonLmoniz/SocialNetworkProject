@@ -31,9 +31,12 @@ public class CreateWindowController{
     @FXML
     void clickStartChatroom(ActionEvent event) throws IOException {
 		String username = tfUsername.getText();
-		String chatname = tfChatName.getText();
+		//String chatname = tfChatName.getText();
 		String chatkey = tfChatKey.getText();
-		String [] userscanjoin = taAllowedUserName.getText().split("\n");
+		String userscanjoin = taAllowedUserName.getText();
+		
+		Client.readInput(username, chatkey,userscanjoin );
+		
 //    	for (String users : userscanjoin)
 //    		System.out.println(users);
 		Parent chatRoomParent = FXMLLoader.load(getClass().getResource("ChatRoomView.fxml"));

@@ -24,7 +24,7 @@ import java.io.*;
 public class Client extends Application {
 	
 	private static int numUser;
-	private static String  key, listOfpeople, userName;
+	private static String  key, listOfpeople, userName, msgout, msgin;
 	
 	/**
 	 * 
@@ -38,17 +38,29 @@ public class Client extends Application {
 	 * @throws IOException
 	 */
 
-	private static void readInput(BufferedReader br) throws IOException {
-
+	public static void readInput(String n, String k, String l) throws IOException {
 		/// ---------------------------------------------------------------
-		System.out.println("Enter the user name");
-		userName = br.readLine();
-		System.out.println("Enter Chat key");
-		key = br.readLine();
-		System.out.println("Enter List of people");
-		listOfpeople = br.readLine();
-		System.out.println("Created");
+		//System.out.println("Enter the user name");
+		//userName = br.readLine();
+		//System.out.println("Enter Chat key");
+		//key = br.readLine();
+		//System.out.println("Enter List of people");
+		//listOfpeople = br.readLine();
+		//System.out.println("Created");
+		userName = n;
+		key = k;
+		listOfpeople = l;
 	}
+	public static void getUser(String n) {
+		userName = n;
+	}
+	public static void getSendMessage(String m) {
+		msgout = m;
+	}
+	public static void SendMessage(String m) {
+		msgout = m;
+	}
+
 
 	/**
 	 * Implemented by Alex J. Monteiro De Pina
@@ -65,27 +77,29 @@ public class Client extends Application {
 			DataOutputStream douts = new DataOutputStream(cs.getOutputStream());
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			numUser = dins.readInt();// read the number of users is already created
-			
-			if ( numUser == 0) {
+			if ( numUser == 0) { // create chat 
 				System.out.println("Create a new chat:");
-				readInput(br); // get All the inputs to create new chat
+				launch(args);
+				//readInput(br); // get All the inputs to create new chat
 				douts.writeUTF(userName);
 				douts.writeUTF(key);
 				douts.writeUTF(listOfpeople);
 				douts.flush();
 			}
-			else {
-				System.out.println("Enter your user name:");
-				userName = br.readLine();	
+			else { // join chat 
+				key = "X";
+				launch(args);
+				//System.out.println("Enter your user name:");
+				//userName = br.readLine();	
 				douts.writeUTF(userName);
 				douts.flush();
-				key = "X";
+				
 			}
 			
 			Thread sendMessage = new Thread(new Runnable() {
 				public void run() {
 					while (true) {
-						String msgout;
+						
 						try {
 							msgout = br.readLine();
 							douts.writeUTF(msgout);
@@ -100,7 +114,7 @@ public class Client extends Application {
 			Thread readMessage = new Thread(new Runnable() {
 				public void run() {
 					while (true) {
-						String msgin;
+						
 						try {
 							msgin = dins.readUTF();
 							System.out.println(msgin);
@@ -119,14 +133,25 @@ public class Client extends Application {
 			System.out.println("\n" + e.getMessage());
 			System.exit(1);
 		}
-		 launch(args);
+		 
 	}
 
 	public void start(Stage primaryStage) throws Exception {
 		// Load the Client GUI
-		Parent mainWindow = FXMLLoader.load(getClass().getResource("MainWindowView.fxml"));
-		primaryStage.setTitle("NP Chatroom");
-		primaryStage.setScene(new Scene(mainWindow, 400, 150));
+		if ( numUser == 0)
+		{
+		Parent mainWindow = FXMLLoader.load(getClass().getResource("CreateWindowView.fxml"));
+		primaryStage.setTitle("Create a new Chat");
+		primaryStage.setScene(new Scene(mainWindow, 600, 500));
 		primaryStage.show();
+		}
+		else
+		{
+			primaryStage = new Stage();
+			Parent mainWindow = FXMLLoader.load(getClass().getResource("EnterUserNameView.fxml"));
+			primaryStage.setTitle("Join a Chat");
+			primaryStage.setScene(new Scene(mainWindow, 300, 120));
+			primaryStage.show();
+		}
 	}
 }
