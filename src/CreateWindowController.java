@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.application.Application;
 
 /* 
  * Controller of the Creating a Chatroom 
@@ -21,7 +22,7 @@ import javafx.stage.Stage;
  * Written by: Emerson Moniz
  * Date:11/30/2018
  */
-public class CreateWindowController {
+public class CreateWindowController extends Application {
 	// Implement methods in controller class
 	@FXML // fx:id="tfChatKey"
 	private TextField tfChatKey; // Value injected by FXMLLoader
@@ -35,10 +36,21 @@ public class CreateWindowController {
 	@FXML // fx:id="taAllowedUserName"
 	private TextArea taAllowedUserName; // Value injected by FXMLLoader
 
-	private Object client;
+	
 
 	private static int numUser;
 	private static String msgout, msgin;
+	
+	static Socket cs;
+	public static DataOutputStream douts;
+	public static DataInputStream dins;
+	
+	public static void flushMessages(DataOutputStream douts, String username, String k, String lpeople) throws IOException {
+		douts.writeUTF(username);
+		douts.writeUTF(k);
+		douts.writeUTF(lpeople);
+		douts.flush();
+	}
 
 	@FXML
 	void clickStartChatroom(ActionEvent event) throws IOException {
@@ -46,26 +58,21 @@ public class CreateWindowController {
 		// String chatname = tfChatName.getText();
 		String chatkey = tfChatKey.getText();
 		String userscanjoin = taAllowedUserName.getText();
-		Socket cs = new Socket("10.200.8.184", 8800); // server
-		DataOutputStream douts= new DataOutputStream(cs.getOutputStream());
-		DataInputStream dins = new DataInputStream(cs.getInputStream());
-		//cs = new Socket("10.200.8.184", 8800); // server
-		//dins = new DataInputStream(cs.getInputStream());
-		//douts = new DataOutputStream(cs.getOutputStream());
+//		Socket cs = new Socket("10.200.8.184", 8800); // server
+//		DataOutputStream douts= new DataOutputStream(cs.getOutputStream());
+//		DataInputStream dins = new DataInputStream(cs.getInputStream());
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
 		try {
-			Client temp = new Client(cs,douts,dins);
+			//Client temp = new Client(cs,douts,dins);
 			//douts = temp.getDouts();
 			//	dins = temp.getDins();
 			
-			
-			numUser = temp.getNumUser();// read the number of users is already created
 			System.out.println("op"+numUser);
 
 		if (numUser == 0) { // create chat
 			System.out.println("Create a new chat:");
-			Client.flushMessages(douts, username, chatkey, userscanjoin);
+			flushMessages(douts, username, chatkey, userscanjoin);
 			// readInput(br); // get All the inputs to create new chat
 		} else { // join chat
 			chatkey = "X";
@@ -138,9 +145,6 @@ public class CreateWindowController {
 		window.show();
 	}
 	
-	void setClient(Client c) {
-		this.client = c;
-	}
 	// public void clickStartChatroom(ActionEvent event) throws IOException{
 	//// TODO: Create an operation for when the user clicks join chatroom
 	// //get data
@@ -178,4 +182,44 @@ public class CreateWindowController {
 	// }
 
 	// TODO: IMPLEMENT ERROR MESSAGES
+
+public static void main(String[] args) throws IOException {
+	// numUser = Server.getNumUser();
+	//InetAddress addr = InetAddress."10.200.188.195";
+	
+	cs = new Socket("10.200.8.184", 8800); // server
+	dins = new DataInputStream(cs.getInputStream());
+	douts = new DataOutputStream(cs.getOutputStream());
+	numUser = dins.readInt();// read the number of users is already created
+	//setDouts(douts);
+	//setDins(dins);
+	//getNumUser();
+	
+	//Client c = new Client();
+
+	System.out.println("Client is Runnig");
+	launch(args);
+	
+				 
+}
+
+public void start(Stage primaryStage) throws Exception {
+	// Load the Client GUI
+	//CreateWindowController temp 
+	if (numUser == 0)
+	{
+	Parent mainWindow = FXMLLoader.load(getClass().getResource("CreateWindowView.fxml"));
+	primaryStage.setTitle("Create a new Chat");
+	primaryStage.setScene(new Scene(mainWindow, 600, 500));
+	primaryStage.show();
+	}
+	else
+	{
+		Stage SecondStage = new Stage();
+		Parent mainWindow = FXMLLoader.load(getClass().getResource("EnterUserNameView.fxml"));
+		SecondStage.setTitle("Join a Chat");
+		SecondStage.setScene(new Scene(mainWindow, 300, 120));
+		SecondStage.show();
+	}
+}
 }
