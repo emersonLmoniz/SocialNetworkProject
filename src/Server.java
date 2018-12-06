@@ -42,7 +42,9 @@ public class Server {
 					DataOutputStream douts = new DataOutputStream(s.getOutputStream());
 					douts.writeInt(getNumUser());
 					douts.flush();
-					if (getNumUser()==0) {
+					System.out.println(getNumUser());
+					if (getNumUser()==0) 
+					{
 						userName = dins.readUTF();
 						key = dins.readUTF();
 						allowedU = dins.readUTF();
@@ -53,6 +55,7 @@ public class Server {
 					else {
 						userName = dins.readUTF();
 					}
+					System.out.println("username: " + userName);
 					if ( users.size() > 0 && allowedUList.contains(userName)) { // give everyone in the list a key except for the person how created the chat
 						key = chat.getKey();
 					}

@@ -24,8 +24,12 @@ import java.io.*;
 public class Client extends Application {
 	
 	private static int numUser;
-	private static String  key, listOfpeople, userName, msgout, msgin;
-	
+	static Socket cs;
+	public static DataOutputStream douts;
+	public static DataInputStream dins;
+//	= new DataOutputStream(cs.getOutputStream());
+	//private static String  key, listOfpeople, userName, msgout, msgin;
+
 	/**
 	 * 
 	 * @param k receives the key for the client
@@ -38,7 +42,12 @@ public class Client extends Application {
 	 * @throws IOException
 	 */
 
-	public static void readInput(String n, String k, String l) throws IOException {
+	Client (Socket clientS, DataOutputStream outs, DataInputStream ins){
+		douts = outs;
+		dins = ins;
+		cs = clientS;
+	}
+	/*public static void readInput(String n, String k, String l) throws IOException {
 		/// ---------------------------------------------------------------
 		//System.out.println("Enter the user name");
 		//userName = br.readLine();
@@ -50,16 +59,46 @@ public class Client extends Application {
 		userName = n;
 		key = k;
 		listOfpeople = l;
+	}*/
+	public static void flushMessages(DataOutputStream douts, String username, String k, String lpeople) throws IOException {
+		douts.writeUTF(username);
+		douts.writeUTF(k);
+		douts.writeUTF(lpeople);
+		douts.flush();
 	}
-	public static void getUser(String n) {
-		userName = n;
+	/**
+	 * 
+	 * @return
+	 */
+	public static DataOutputStream getDouts() {
+		return douts;
 	}
-	public static void getSendMessage(String m) {
+
+	/**
+	 * @return dins
+	 */
+	/*public static DataInputStream getDins() {
+		return dins;
+	}
+
+	public static void setDouts(DataOutputStream outputStream) {
+		douts = outputStream;
+	}*/
+	/**
+	 * @param dins the dins to set
+	 */
+	public static void setDins(DataInputStream inputStream) {
+		dins = inputStream;
+	}
+
+	public int getNumUser() throws IOException {
+		numUser = dins.readInt();
+		return numUser;
+	}
+	/*public static void getSendMessage(String m) {
 		msgout = m;
 	}
-	public static void SendMessage(String m) {
-		msgout = m;
-	}
+	*/
 
 
 	/**
@@ -69,76 +108,27 @@ public class Client extends Application {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		try {
-			
-			Socket cs = new Socket("localhost", 8800); // server
-			System.out.println("Client is Runnig");
-			DataInputStream dins = new DataInputStream(cs.getInputStream());
-			DataOutputStream douts = new DataOutputStream(cs.getOutputStream());
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			numUser = dins.readInt();// read the number of users is already created
-			if ( numUser == 0) { // create chat 
-				System.out.println("Create a new chat:");
-				launch(args);
-				//readInput(br); // get All the inputs to create new chat
-				douts.writeUTF(userName);
-				douts.writeUTF(key);
-				douts.writeUTF(listOfpeople);
-				douts.flush();
-			}
-			else { // join chat 
-				key = "X";
-				launch(args);
-				//System.out.println("Enter your user name:");
-				//userName = br.readLine();	
-				douts.writeUTF(userName);
-				douts.flush();
-				
-			}
-			
-			Thread sendMessage = new Thread(new Runnable() {
-				public void run() {
-					while (true) {
-						
-						try {
-							msgout = br.readLine();
-							douts.writeUTF(msgout);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-					}
-				}
-			});
-			Thread readMessage = new Thread(new Runnable() {
-				public void run() {
-					while (true) {
-						
-						try {
-							msgin = dins.readUTF();
-							System.out.println(msgin);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-					}
-				}
-			});
-			sendMessage.start();
-			readMessage.start();
-			// cs.close();
-		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage());
-			System.exit(1);
-		}
-		 
+//     	numUser = Server.getNumUser();
+		//InetAddress addr = InetAddress."10.200.188.195";
+		cs = new Socket("10.200.8.184", 8800); // server
+		dins = new DataInputStream(cs.getInputStream());
+		douts = new DataOutputStream(cs.getOutputStream());
+	//	setDouts(douts);
+		//setDins(dins);
+		//getNumUser();
+		
+		//Client c = new Client();
+	
+		System.out.println("Client is Runnig");
+		launch(args);
+		
+					 
 	}
 
 	public void start(Stage primaryStage) throws Exception {
 		// Load the Client GUI
-		if ( numUser == 0)
+		//CreateWindowController temp 
+		if (numUser == 0)
 		{
 		Parent mainWindow = FXMLLoader.load(getClass().getResource("CreateWindowView.fxml"));
 		primaryStage.setTitle("Create a new Chat");

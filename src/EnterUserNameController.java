@@ -25,7 +25,7 @@ public class EnterUserNameController {
 	public void clickStartChatroom(ActionEvent event) throws IOException {
 //		TODO: Create an operation for when the user clicks join chatroom
 		String username = id_username.getText();
-		Client.getUser(username);
+		//Client.getUser(username);
 		System.out.println("User has joined the chatroom");
 		Parent chatRoomParent = FXMLLoader.load(getClass().getResource("ChatRoomView.fxml"));
 		Scene chatRoomScene = new Scene(chatRoomParent);
