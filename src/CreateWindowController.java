@@ -73,11 +73,9 @@ public class CreateWindowController extends Application {
 		if (numUser == 0) { // create chat
 			System.out.println("Create a new chat:");
 			flushMessages(douts, username, chatkey, userscanjoin);
-			// readInput(br); // get All the inputs to create new chat
+			
 		} else { // join chat
 			chatkey = "X";
-			// System.out.println("Enter your user name:");
-			// userName = br.readLine();
 			douts.writeUTF(username);
 			douts.flush();
 
@@ -116,7 +114,10 @@ public class CreateWindowController extends Application {
 		sendMessage.start();
 		readMessage.start();
 		// cs.close();
-	}catch(
+		
+	}
+	
+	catch(
 
 	Exception e)
 	{
@@ -187,7 +188,7 @@ public static void main(String[] args) throws IOException {
 	// numUser = Server.getNumUser();
 	//InetAddress addr = InetAddress."10.200.188.195";
 	
-	cs = new Socket("10.200.8.184", 8800); // server
+	cs = new Socket("localHost", 8800); // server
 	dins = new DataInputStream(cs.getInputStream());
 	douts = new DataOutputStream(cs.getOutputStream());
 	numUser = dins.readInt();// read the number of users is already created
@@ -197,29 +198,33 @@ public static void main(String[] args) throws IOException {
 	
 	//Client c = new Client();
 
-	System.out.println("Client is Runnig");
-	launch(args);
+	System.out.println("Client is Running");
+	launch();
+	
 	
 				 
 }
 
-public void start(Stage primaryStage) throws Exception {
-	// Load the Client GUI
-	//CreateWindowController temp 
-	if (numUser == 0)
-	{
-	Parent mainWindow = FXMLLoader.load(getClass().getResource("CreateWindowView.fxml"));
-	primaryStage.setTitle("Create a new Chat");
-	primaryStage.setScene(new Scene(mainWindow, 600, 500));
-	primaryStage.show();
+	public void start(Stage primaryStage) throws Exception {
+		// Load the Client GUI
+		// CreateWindowController temp
+		// if (numUser == 0)
+		// {
+		Parent mainWindow = FXMLLoader.load(getClass().getResource("CreateWindowView.fxml"));
+		primaryStage.setTitle("Create a new Chat");
+		primaryStage.setScene(new Scene(mainWindow, 600, 500));
+		primaryStage.show();
+		// }
+		// else
+		// {
+		// //Stage SecondStage = new Stage();
+		// Parent mainWindow =
+		// FXMLLoader.load(getClass().getResource("EnterUserNameView.fxml"));
+		// primaryStage.setTitle("Join a Chat");
+		// primaryStage.setScene(new Scene(mainWindow, 300, 120));
+		// primaryStage.show();
+		//
+		//
+		// }
 	}
-	else
-	{
-		Stage SecondStage = new Stage();
-		Parent mainWindow = FXMLLoader.load(getClass().getResource("EnterUserNameView.fxml"));
-		SecondStage.setTitle("Join a Chat");
-		SecondStage.setScene(new Scene(mainWindow, 300, 120));
-		SecondStage.show();
-	}
-}
 }

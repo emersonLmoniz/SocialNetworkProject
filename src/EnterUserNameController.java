@@ -33,6 +33,7 @@ public class EnterUserNameController {
 		Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
 		window.setScene(chatRoomScene);
 		window.show();
+		
 	}
 	
 }
