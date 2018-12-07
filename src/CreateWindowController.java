@@ -87,6 +87,7 @@ public class CreateWindowController extends Application {
 
 					try {
 						msgout = br.readLine();
+						msgout = Algorithm.encrypt(msgin, Server.chat.getKey()); // encrypt the message before sending it to the server
 						douts.writeUTF(msgout);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
