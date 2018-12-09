@@ -1,4 +1,7 @@
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,7 +35,10 @@ public class ChatRoomController {
 
 	    @FXML
 	    private Button btnSend;
-	
+	    
+        String msgin = "";
+
+	    
 	    @FXML
 	    void DecryptMessage(ActionEvent event) {
 
@@ -53,6 +59,36 @@ public class ChatRoomController {
 	        assert taMessage != null : "fx:id=\"taMessage\" was not injected: check your FXML file 'ChatRoomView.fxml'.";
 	        assert taUserlist != null : "fx:id=\"taUserlist\" was not injected: check your FXML file 'ChatRoomView.fxml'.";
 	        assert btnSend != null : "fx:id=\"btnSend\" was not injected: check your FXML file 'ChatRoomView.fxml'.";
+			try {
+				Socket cs;
+
+				cs = new Socket("localhost", 8800);
+				DataInputStream dins = new DataInputStream(cs.getInputStream());
+		    	Thread readMessage = new Thread(new Runnable() {
+					public void run() {
+						while (true) {
+							
+							try {
+								msgin = dins.readUTF();
+								taChatRoom.appendText(msgin);
+//								System.out.println(msgin);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+
+						}
+					}
+				});
+			} catch (UnknownHostException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} // server
+	        
+//	    	readMessage.start();
 
 	    }
 }
