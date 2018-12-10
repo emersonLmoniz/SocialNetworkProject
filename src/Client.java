@@ -41,7 +41,7 @@ public class Client extends Application {
 	private static void readInput(BufferedReader br) throws IOException {
 
 		/// ---------------------------------------------------------------
-		System.out.println("Enter the user name");
+		System.out.println("Enter the user name:");
 		userName = br.readLine();
 		System.out.println("Enter Chat key");
 		key = br.readLine();
@@ -69,7 +69,7 @@ public class Client extends Application {
 			numUser = dins.readInt();// read the number of users is already created
 			
 			if ( numUser == 0) {
-				System.out.println("Create a new chat:");
+				System.out.println("Creating a new chat");
 				readInput(br); // get All the inputs to create new chat
 				douts.writeUTF(userName);
 				douts.writeUTF(key);

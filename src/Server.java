@@ -113,6 +113,7 @@ class ClientHandler implements Runnable {
 				msgin = dins.readUTF();
 				if (msgin.equals("exit")) { // user wants to leave chat
 					isloggedin = false;
+					Server.users.remove(this);
 					this.s.close();
 					break;
 				}
