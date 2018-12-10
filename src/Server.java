@@ -2,6 +2,11 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 /* 
  * Server Class 
  * Written by: Alex J. Monteiro De Pina 
@@ -110,6 +115,11 @@ class ClientHandler implements Runnable {
 		String msgin = "", msgout = "";
 		while (true) {
 			try {
+				Stage primaryStage = new Stage();
+				Parent mainWindow = FXMLLoader.load(getClass().getResource("CreateWindowView.fxml"));
+				primaryStage.setTitle("Create a new Chat");
+				primaryStage.setScene(new Scene(mainWindow, 600, 500));
+				primaryStage.show();
 				// receive the string
 				msgin = dins.readUTF();
 				if (msgin.equals("exit")) { // user wants to leave chat

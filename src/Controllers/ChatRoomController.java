@@ -1,3 +1,4 @@
+package Controllers;
 import java.io.IOException;
 
 import javafx.event.ActionEvent;
@@ -40,7 +41,10 @@ public class ChatRoomController {
 
 	    @FXML
 	    void EncryptMessage(ActionEvent event) {
-
+	    	String usermessage = taMessage.getText();
+//	    	Client.getSendMessage(usermessage);
+	    	// I don't understand how you get the message from clienthandler...
+	    	taChatRoom.appendText(usermessage + "\n");
 	    }
 	    public void clickStartChatroom(ActionEvent event) throws IOException {
 	    }
