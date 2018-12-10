@@ -1,155 +1,75 @@
-import java.io.*;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
-/* 
- * Server Class 
- * Written by: Alex J. Monteiro De Pina 
- * Date: 11/30/2018
+/**
+ * Server Model Object
+ * This allows incoming connections from the client.
+ * Client is each handled on each thread separately
+ * Last Updated: 12/8/2018
+ * @author Alex De Pina, Emerson Moniz
  */
+public class Server extends Thread {
+    private final int serverPort;
+    //    List of serverWorkers for the task
+    private ArrayList<ServerWorker> userList = new ArrayList<>();
+    Scanner in;
 
-public class Server {
-	private static String userName, key, allowedU;
-	static String[] allowedUsers;
-	static ArrayList<String> allowedUList = new ArrayList<>();
-	static ArrayList<ClientHandler> users = new ArrayList <>();
-	static chatRoom chat;
+    /**
+     * Constructor for the Server class
+     * @param serverPort (required) need to know the ServerPort
+     */
+    public Server(int serverPort) {
+        this.serverPort = serverPort;
+    }
 
-	public static int getNumUser() {
-		return users.size();
-	}
-	public static void arrayToList() {
-		for(int i = 0; i <  allowedUsers.length; i++) { // convert String Array to Arraylist
-			allowedUList.add(allowedUsers[i]); 
-		}
-	}
-	/**
-	 * @param args
-	 */
-	public static void main(String[]args) {
+    /**
+     * Returns a list object that contains all users in list
+     * @return the list of users in the server
+     */
+    public List<ServerWorker> getUserList() {
+        return userList;
+    }
 
-		try {
-			System.out.println("Server is Running");
-			ServerSocket ss = new ServerSocket(8800);
-			
-			while (true) {
-					
-					Socket s =ss.accept();
-					System.out.println("New client request received for chat.");
-					
-					// set up streams
-					DataInputStream dins = new DataInputStream(s.getInputStream());
-					DataOutputStream douts = new DataOutputStream(s.getOutputStream());
-					douts.writeInt(getNumUser());
-					douts.flush();
-					System.out.println(getNumUser());
-					if (getNumUser()==0) 
-					{
-						userName = dins.readUTF();
-						key = dins.readUTF();
-						allowedU = dins.readUTF();
-						allowedUsers = allowedU.split(" ");
-						arrayToList();
-						chat = new chatRoom(8800, key, allowedUsers);
-					}
-					else {
-						userName = dins.readUTF();
-					}
-					System.out.println("username: " + userName);
-					if ( users.size() > 0 && allowedUList.contains(userName)) { // give everyone in the list a key except for the person how created the chat
-						key = chat.getKey();
-					}
-					else if (users.size() > 0) {
-						key = "X";
-					}
-					// Create a new handler for this client
-					ClientHandler user = new ClientHandler(s,userName, key, dins, douts);
-					Thread t = new Thread(user);// creates a new thread for this user
-					users.add(user);
-					t.start();	
-			}
-		} catch (Exception e) {
-			System.out.println("\n" + e.getMessage());
-			System.exit(1);
-		}
+    /**
+     * Returns an integer of all the users logged in the server
+     * @return the number of users in the server
+     */
+    public int getNumUser() {
+        return userList.size();
+    }
 
-	}
-}
+    @Override
+    public void run() {
+        try {
+            ServerSocket serverSocket = new ServerSocket(serverPort);
+            System.out.println("Server is Running");
+            // Infinite loop to allow all the clients to connect to the server
+            while (true) {
+                System.out.println("Waiting for Clients to connect ... ");
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("New client request received for chat." + clientSocket);
+                // creates a new thread for this user
+                // Extract the value from GUI
+//                String name = "";
+//                String key = "";
+//                ArrayList <String> allowedUsers = new ArrayList<>();
+                // Missing from implementation is a list of players retrieved from GUI
+                ServerWorker worker = new ServerWorker(this, clientSocket);
+                // Add each incoming connection to the list
+                userList.add(worker);
+                worker.start();
+            }
+        } catch (Exception e) {
+            System.out.println("\n" + e.getMessage());
+            System.exit(1);
+        }
 
-/*
- * chatRoom Class Will Create a new chatRoom and hold all the info for the chat
- * Written by: Alex J. Monteiro De Pina Date: 11/29/2018
- */
+    }
 
-/*
- * Client Handler A helper class that will will handle multiple clients in the
- * same chatroom manage the send and receive of the message Written by: Alex J.
- * Monteiro De Pina Date: 11/29/2018
- */
-class ClientHandler implements Runnable {
-
-	private String name;
-	final DataInputStream dins;
-	final DataOutputStream douts;
-	boolean isloggedin;
-	Socket s;
-	private String key;
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-	// constructor
-	public ClientHandler(Socket s,String name,String k, DataInputStream dins, DataOutputStream douts) {
-		this.dins = dins;
-		this.douts = douts;
-		this.name = name;
-		this.s = s;
-		this.isloggedin = true;
-		this.key = k;
-	}
-	@Override
-	public void run() {
-		String msgin = "", msgout = "";
-		while (true) {
-			try {
-				Stage primaryStage = new Stage();
-				Parent mainWindow = FXMLLoader.load(getClass().getResource("CreateWindowView.fxml"));
-				primaryStage.setTitle("Create a new Chat");
-				primaryStage.setScene(new Scene(mainWindow, 600, 500));
-				primaryStage.show();
-				// receive the string
-				msgin = dins.readUTF();
-				if (msgin.equals("exit")) { // user wants to leave chat
-					isloggedin = false;
-					this.s.close();
-					break;
-				}
-				msgin = Algorithm.encrypt(msgin, Server.chat.getKey()); // encrypt the message before sending it to the server
-				msgout = msgin;
-				for (ClientHandler ch : Server.users) { // send the message to all the users
-					if ((!(ch.name).equals(this.name)) && (ch.isloggedin == true)) {
-						msgout = Algorithm.decrypt(msgout, ch.key);
-						ch.douts.writeUTF(this.name + ": " + msgout);
-						ch.douts.flush();
-					}
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-		}
-		try {
-			// closing resources
-			this.dins.close();
-			this.douts.close();
-
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public void removeWorker(ServerWorker serverWorker) {
+        userList.remove(serverWorker);
+    }
 }
