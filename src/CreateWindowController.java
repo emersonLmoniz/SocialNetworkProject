@@ -187,7 +187,7 @@ public static void main(String[] args) throws IOException {
 	// numUser = Server.getNumUser();
 	//InetAddress addr = InetAddress."10.200.188.195";
 	
-	cs = new Socket("10.200.8.184", 8800); // server
+	cs = new Socket("localhost", 8800); // server
 	dins = new DataInputStream(cs.getInputStream());
 	douts = new DataOutputStream(cs.getOutputStream());
 	numUser = dins.readInt();// read the number of users is already created
