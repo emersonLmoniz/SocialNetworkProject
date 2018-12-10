@@ -1,7 +1,9 @@
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
-
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.Vector;
 /* 
  * Server Class 
  * Written by: Alex J. Monteiro De Pina 
@@ -42,9 +44,7 @@ public class Server {
 					DataOutputStream douts = new DataOutputStream(s.getOutputStream());
 					douts.writeInt(getNumUser());
 					douts.flush();
-					System.out.println(getNumUser());
-					if (getNumUser()==0) 
-					{
+					if (getNumUser()==0) {
 						userName = dins.readUTF();
 						key = dins.readUTF();
 						allowedU = dins.readUTF();
@@ -55,7 +55,6 @@ public class Server {
 					else {
 						userName = dins.readUTF();
 					}
-					System.out.println("username: " + userName);
 					if ( users.size() > 0 && allowedUList.contains(userName)) { // give everyone in the list a key except for the person how created the chat
 						key = chat.getKey();
 					}
@@ -114,6 +113,7 @@ class ClientHandler implements Runnable {
 				msgin = dins.readUTF();
 				if (msgin.equals("exit")) { // user wants to leave chat
 					isloggedin = false;
+					Server.users.remove(this);
 					this.s.close();
 					break;
 				}
@@ -143,3 +143,4 @@ class ClientHandler implements Runnable {
 		}
 	}
 }
+
